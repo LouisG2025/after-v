@@ -7,7 +7,7 @@ const FlipCard = ({ card, index }: { card: any, index: number }) => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <div 
+        <div
             className="relative h-[410px] w-full [perspective:1000px] group cursor-pointer"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}

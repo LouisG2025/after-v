@@ -18,6 +18,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Demo from "./pages/Demo";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
+import ScrollToTop from "./components/ScrollToTop";
 
 const Home = () => {
   return (
@@ -40,6 +41,7 @@ const Home = () => {
 function App() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <ScrollToTop />
       <FloatingNavbar />
       <main>
         <Routes>

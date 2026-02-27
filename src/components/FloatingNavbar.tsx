@@ -128,7 +128,7 @@ const FloatingNavbar = () => {
                                 variants={{
                                     rest: { x: '-110%', skewX: -15 },
                                     hover: { x: '210%', skewX: -15 }
-                                } }
+                                }}
                                 transition={{ duration: 0.55, ease: [0.23, 1, 0.32, 1] }}
                                 className="absolute inset-0 w-1/2 bg-[#2EFFA1]/50 blur-sm pointer-events-none"
                             />
@@ -140,7 +140,7 @@ const FloatingNavbar = () => {
                                 variants={{
                                     rest: { x: -6, opacity: 0 },
                                     hover: { x: 0, opacity: 1 }
-                                } }
+                                }}
                                 transition={{ duration: 0.25 }}
                                 className="relative z-10 w-4 h-4"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -175,9 +175,9 @@ const FloatingNavbar = () => {
                                     {link.name}
                                 </Link>
                             ))}
-                            
-                            <Link 
-                                to="/contact" 
+
+                            <Link
+                                to="/contact"
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="mt-4"
                             >
