@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MousePointer2, Zap, Search, Filter, CalendarCheck, MessageSquare, Database, BarChart3, Settings, Rocket, Target, Users } from 'lucide-react';
 
@@ -77,84 +78,95 @@ const steps = [
 ];
 
 const DetailedProcess = () => {
-    return (
-        <section className="bg-black text-white py-32 overflow-hidden relative">
-            {/* Ambient glows */}
-            <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-[#2EFFA1]/5 blur-[160px] rounded-full pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#2EFFA1]/4 blur-[130px] rounded-full pointer-events-none" />
+    const [activeStep, setActiveStep] = useState(0);
 
-            <div className="max-w-[1411px] mx-auto px-6 lg:px-20">
-                <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+    return (
+        <section className="bg-black text-white py-32 relative">
+            {/* Ambient glows */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-[#2EFFA1]/5 blur-[160px] rounded-full pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#2EFFA1]/4 blur-[130px] rounded-full pointer-events-none" />
+            </div>
+
+            <div className="max-w-[1411px] mx-auto px-6 lg:px-20 relative z-10">
+                <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 relative">
 
                     {/* ── LEFT: Sticky Sidebar ── */}
-                    <div className="lg:w-[360px] shrink-0">
-                        <div className="lg:sticky lg:top-32 space-y-10">
-                            {/* Badge */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 16 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                className="inline-flex items-center px-4 py-2 rounded-full bg-[#2EFFA1]/10 border border-[#2EFFA1]/20"
-                            >
-                                <span className="text-[#2EFFA1] text-sm font-semibold uppercase tracking-wider">How We Work</span>
-                            </motion.div>
+                    <div className="lg:w-[360px] shrink-0 lg:sticky lg:top-32 self-start space-y-10 h-fit">
+                        {/* Badge */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="inline-flex items-center px-4 py-2 rounded-full bg-[#2EFFA1]/10 border border-[#2EFFA1]/20"
+                        >
+                            <span className="text-[#2EFFA1] text-sm font-semibold uppercase tracking-wider">How We Work</span>
+                        </motion.div>
 
-                            {/* Heading */}
-                            <motion.h2
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.1, duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
-                                className="font-cabinet font-bold text-[48px] leading-[1.1] tracking-tight"
-                            >
-                                Speed is the{' '}
-                                <span className="text-[#2EFFA1]">difference</span>{' '}
-                                between a lead and a lost opportunity.
-                            </motion.h2>
+                        {/* Heading */}
+                        <motion.h2
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1, duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+                            className="font-cabinet font-bold text-[48px] leading-[1.1] tracking-tight"
+                        >
+                            Speed is the{' '}
+                            <span className="text-accent-green">difference</span>{' '}
+                            between a lead and a lost opportunity.
+                        </motion.h2>
 
-                            <motion.p
-                                initial={{ opacity: 0, y: 16 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.2 }}
-                                className="font-inter text-lg text-white/50 leading-relaxed"
-                            >
-                                Ready to see how more leads could turn into revenue?
-                            </motion.p>
+                        <motion.p
+                            initial={{ opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                            className="font-inter text-lg text-white/50 leading-relaxed"
+                        >
+                            Ready to see how more leads could turn into revenue?
+                        </motion.p>
 
-                            <motion.button
-                                initial={{ opacity: 0, y: 16 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.3 }}
-                                whileHover={{ scale: 1.04, backgroundColor: "#2EFFA1" }}
-                                whileTap={{ scale: 0.97 }}
-                                className="group flex items-center gap-4 bg-white text-black px-8 py-4 rounded-full font-bold text-lg transition-colors duration-300"
-                            >
-                                Book a Demo
-                                <div className="w-9 h-9 rounded-full bg-black/8 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                                    <Rocket className="w-4 h-4" />
-                                </div>
-                            </motion.button>
-
-                            {/* Step counter */}
-                            <div className="hidden lg:flex flex-col gap-2 pt-4">
-                                {steps.map((s) => (
-                                    <div key={s.number} className="flex items-center gap-3">
-                                        <div className="w-6 h-6 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                                            <span className="text-[10px] font-bold text-white/40">{s.number}</span>
-                                        </div>
-                                        <span className="text-white/30 text-sm font-inter">{s.title}</span>
-                                    </div>
-                                ))}
+                        <motion.button
+                            initial={{ opacity: 0, y: 16 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3 }}
+                            whileHover={{ scale: 1.04, backgroundColor: "#2EFFA1" }}
+                            whileTap={{ scale: 0.97 }}
+                            className="group flex items-center gap-4 bg-white text-black px-8 py-4 rounded-full font-bold text-lg transition-colors duration-300"
+                        >
+                            Book a Demo
+                            <div className="w-9 h-9 rounded-full bg-black/8 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                <Rocket className="w-4 h-4" />
                             </div>
+                        </motion.button>
+
+                        {/* Step counter */}
+                        <div className="hidden lg:flex flex-col gap-4 pt-8">
+                            {steps.map((s, index) => {
+                                const isActive = activeStep === index;
+                                return (
+                                    <div key={s.number} className={`flex items-center gap-4 transition-all duration-500 cursor-default ${isActive ? 'opacity-100 translate-x-2' : 'opacity-40 translate-x-0'}`}>
+                                        <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-500 ${isActive ? 'bg-accent-green/20 border-accent-green/50 scale-110 shadow-[0_0_15px_rgba(46,255,161,0.2)]' : 'bg-white/5 border-white/10 scale-100'}`}>
+                                            <span className={`text-[12px] font-bold transition-colors duration-500 ${isActive ? 'text-accent-green' : 'text-white/40'}`}>{s.number}</span>
+                                        </div>
+                                        <span className={`text-[15px] font-inter font-medium transition-colors duration-500 ${isActive ? 'text-white' : 'text-white/40'}`}>{s.title}</span>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
 
                     {/* ── RIGHT: Timeline ─ per-step dot+connector approach ── */}
                     <div className="flex-1 mt-12 lg:mt-0">
                         {steps.map((step, index) => (
-                            <div key={index} className="flex flex-row gap-8">
+                            <div key={index} className="flex flex-row gap-8 relative">
+                                {/* Scroll Tracker */}
+                                <motion.div
+                                    onViewportEnter={() => setActiveStep(index)}
+                                    viewport={{ margin: "-50% 0px -30% 0px" }}
+                                    className="absolute inset-0 pointer-events-none z-[-1]"
+                                />
 
                                 {/* Left column: dot + line below (no line for last step) */}
                                 <div className="flex flex-col items-center shrink-0">
