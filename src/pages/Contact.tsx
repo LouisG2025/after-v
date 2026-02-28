@@ -76,7 +76,7 @@ const Contact = () => {
     }, [scriptLoaded, activeTab]);
 
     return (
-        <div className="bg-[#efefef] min-h-screen font-inter flex flex-col pb-24">
+        <div className="bg-background min-h-screen font-inter flex flex-col pb-24">
             <PageHero title="Contact" accent="Us" />
             <div className="max-w-[1411px] mx-auto px-6 w-full flex-1 flex flex-col gap-12 mt-12">
 

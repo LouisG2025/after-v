@@ -16,7 +16,7 @@ interface PageHeroProps {
  */
 const PageHero = ({ title, accent, subtitle }: PageHeroProps) => {
     return (
-        <div className="bg-[#efefef] pt-[80px]">
+        <div className="bg-background pt-[80px]">
             <section className="relative h-[589px] mx-4 bg-black rounded-[20px] overflow-hidden flex items-center justify-center">
                 {/* White line grid */}
                 <div
@@ -29,7 +29,7 @@ const PageHero = ({ title, accent, subtitle }: PageHeroProps) => {
 
                 {/* Ambient green glow */}
                 <div className="absolute inset-0 z-0 pointer-events-none">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[600px] bg-[#2EFFA1]/10 blur-[150px] rounded-full opacity-50" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[600px] bg-accent-green/10 blur-[150px] rounded-full opacity-50" />
                 </div>
 
                 {/* Heading */}
@@ -41,7 +41,7 @@ const PageHero = ({ title, accent, subtitle }: PageHeroProps) => {
                         className="font-cabinet font-bold text-[36px] min-[400px]:text-[48px] md:text-[80px] text-white leading-[1.1] md:leading-none"
                     >
                         {title}{' '}
-                        <span className="text-[#2EFFA1]">{accent}</span>
+                        <span className="text-accent-green">{accent}</span>
                     </motion.h1>
 
                     {subtitle && (

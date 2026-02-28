@@ -195,7 +195,7 @@ const Demo = () => {
         description: "Experience After5 Digital's AI sales agents in action with our interactive demo."
     });
     return (
-        <div className="bg-[#efefef]">
+        <div className="bg-background">
             <PageHero title="Ready To Try The" accent="Demo?" />
             <DemoForm />
         </div>

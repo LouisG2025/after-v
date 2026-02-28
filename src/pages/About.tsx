@@ -14,7 +14,7 @@ const About = () => {
     });
 
     return (
-        <div className="bg-[#efefef]">
+        <div className="bg-background">
             <AboutHero />
 
             {/* Why We Built Section */}
