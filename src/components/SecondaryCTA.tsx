@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useGlowTrigger } from '../hooks/useGlowTrigger';
 
 const SecondaryCTA = () => {
+    const glowRef = useGlowTrigger('secondary-cta');
     return (
         <motion.section
+            ref={glowRef}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}

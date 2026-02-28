@@ -190,12 +190,13 @@ const DemoForm = () => {
 };
 
 const Demo = () => {
+    const glowRef = useGlowTrigger('demo-page');
     usePageMeta({
         title: "After5 Digital - Try the Demo",
         description: "Experience After5 Digital's AI sales agents in action with our interactive demo."
     });
     return (
-        <div className="bg-background">
+        <div ref={glowRef} className="bg-background">
             <PageHero title="Ready To Try The" accent="Demo?" />
             <DemoForm />
         </div>

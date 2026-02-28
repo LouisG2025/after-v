@@ -1,16 +1,22 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import PageHero from '../components/PageHero';
 import { usePageMeta } from '../hooks/usePageMeta';
-
+import { useGlowTrigger } from '../hooks/useGlowTrigger';
 
 const Contact = () => {
+    const glowRef = useGlowTrigger('contact-page');
     usePageMeta({
         title: "After5 Digital - Contact Us",
         description: "Get in touch with After5 Digital to learn more about our AI sales agents."
     });
 
-    const [activeTab, setActiveTab] = useState<'call' | 'message'>('call');
+    const [searchParams] = useSearchParams();
+    const [activeTab, setActiveTab] = useState<'call' | 'message'>(() => {
+        const tab = searchParams.get('tab');
+        return tab === 'message' ? 'message' : 'call';
+    });
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [enquiryType, setEnquiryType] = useState('');
     const [isCalendlyLoading, setIsCalendlyLoading] = useState(true);
@@ -41,6 +47,15 @@ const Contact = () => {
     };
 
     const successContent = successVariants[enquiryType] ?? successVariants[''];
+
+    useEffect(() => {
+        const tab = searchParams.get('tab');
+        if (tab === 'message') {
+            setActiveTab('message');
+        } else if (tab === 'call') {
+            setActiveTab('call');
+        }
+    }, [searchParams]);
 
 
     useEffect(() => {
@@ -76,7 +91,7 @@ const Contact = () => {
     }, [scriptLoaded, activeTab]);
 
     return (
-        <div className="bg-background min-h-screen font-inter flex flex-col pb-24">
+        <div ref={glowRef} className="bg-background min-h-screen font-inter flex flex-col pb-24">
             <PageHero title="Contact" accent="Us" />
             <div className="max-w-[1411px] mx-auto px-6 w-full flex-1 flex flex-col gap-12 mt-12">
 
@@ -165,7 +180,7 @@ const Contact = () => {
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 1, delay: 0.4 }}
-                        className="flex-1 flex flex-col pt-0 px-4 md:px-8 pb-10 bg-white"
+                        className="flex-1 flex flex-col pt-0 px-4 md:px-8 pb-10 bg-background"
                     >
                         {/* Tabs Header */}
                         <div className="flex items-center gap-8 mb-4 mt-8 border-b border-[#f1f5f9] px-4 md:px-0">
@@ -262,7 +277,7 @@ const Contact = () => {
                                                     damping: 20,
                                                     delay: 0.2
                                                 }}
-                                                className="w-10 h-10 rounded-full bg-[#2EFFA1] flex items-center justify-center text-white"
+                                                className="w-10 h-10 rounded-full bg-accent-green flex items-center justify-center text-white"
                                             >
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                                     <motion.path

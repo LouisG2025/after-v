@@ -20,6 +20,7 @@ import Contact from "./pages/Contact";
 import About from "./pages/About";
 import ScrollToTop from "./components/ScrollToTop";
 import { usePageMeta } from "./hooks/usePageMeta";
+import { CtaGlowProvider } from "./context/CtaGlowContext";
 
 const Home = () => {
   usePageMeta({
@@ -53,22 +54,24 @@ const Home = () => {
 
 function App() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <ScrollToTop />
-      <FloatingNavbar />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/how-we-work" element={<HowWeWork />} />
-          <Route path="/terms-and-conditions" element={<TermsConditions />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/demo" element={<Demo />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </main>
-      <Footer />
-    </div>
+    <CtaGlowProvider>
+      <div className="min-h-screen bg-background text-foreground">
+        <ScrollToTop />
+        <FloatingNavbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/how-we-work" element={<HowWeWork />} />
+            <Route path="/terms-and-conditions" element={<TermsConditions />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/demo" element={<Demo />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </CtaGlowProvider>
   );
 }
 

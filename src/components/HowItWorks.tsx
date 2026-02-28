@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { useGlowTrigger } from "../hooks/useGlowTrigger";
 
 const steps = [
     {
@@ -36,8 +37,8 @@ const steps = [
 ];
 
 const HowItWorks = () => {
+    const glowRef = useGlowTrigger("how-it-works");
     const containerRef = useRef<HTMLDivElement>(null);
-    const sectionRef = useRef<HTMLElement>(null);
     const headingRef = useRef<HTMLHeadingElement>(null);
     const headingInView = useInView(headingRef, { once: true, amount: 0.5 });
 
@@ -49,7 +50,7 @@ const HowItWorks = () => {
     const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
     return (
-        <section ref={sectionRef} id="how-it-works" className="py-32 bg-background overflow-clip">
+        <section ref={glowRef} id="how-it-works" className="py-32 bg-background overflow-clip">
             <div className="max-w-[1411px] mx-auto px-6">
                 <div className="flex flex-col lg:flex-row gap-20 relative">
 

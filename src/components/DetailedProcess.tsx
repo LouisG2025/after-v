@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { MousePointer2, Zap, Search, Filter, CalendarCheck, MessageSquare, Database, BarChart3, Settings, Rocket, Target, Users } from 'lucide-react';
+import { useGlowTrigger } from '../hooks/useGlowTrigger';
 
 const steps = [
     {
@@ -80,9 +81,10 @@ const steps = [
 
 const DetailedProcess = () => {
     const [activeStep, setActiveStep] = useState(0);
+    const glowRef = useGlowTrigger('detailed-process');
 
     return (
-        <section className="bg-black text-white py-32 relative">
+        <section ref={glowRef} className="bg-black text-white py-32 relative">
             {/* Ambient glows */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-[#2EFFA1]/5 blur-[160px] rounded-full pointer-events-none" />

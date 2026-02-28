@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useGlowTrigger } from "../hooks/useGlowTrigger";
 
 const Hero = () => {
+  const glowRef = useGlowTrigger("hero");
   return (
     <section className="relative pt-44 lg:pt-56 pb-0 overflow-hidden bg-background">
       {/* Background grid using SVG pattern for clean, non-overlapping lines */}
@@ -89,13 +91,12 @@ const Hero = () => {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
-              className="w-full mt-10 rounded-t-[16px] md:rounded-t-[30px] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.2)] border border-b-0 border-black/10 overflow-hidden relative max-h-[300px] sm:max-h-[380px] md:max-h-[600px]"
+              className="w-full mt-10 rounded-t-[16px] md:rounded-t-[30px] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] border border-b-0 border-black/10 overflow-hidden relative h-[180px] sm:h-auto sm:max-h-[380px] md:max-h-[600px]"
             >
               <img
                 src="/assets/dashboard.svg"
                 alt="After5 Dashboard"
-                className="w-[150%] min-[400px]:w-[140%] sm:w-[120%] md:w-full max-w-none md:max-w-full h-auto block object-cover md:object-contain object-left-top md:object-top"
-                style={{ transform: "translateX(-4%) md:translateX(0)" }}
+                className="w-full h-full sm:h-auto block object-cover sm:object-contain object-top"
               />
             </motion.div>
           </div>
@@ -103,14 +104,25 @@ const Hero = () => {
       </div>
 
       {/* CRM Logos Header — Static and Centered */}
-      <div className="relative z-10 flex flex-col items-center bg-background pt-16 pb-4">
+      <motion.div
+        ref={glowRef}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.4 }}
+        className="relative z-10 flex flex-col items-center bg-background md:pt-16 pt-8 pb-4"
+      >
         <p className="font-inter font-semibold text-primary/60 text-[13px] tracking-[0.3em] uppercase text-center">
           20+ CRM’S WE INTEGRATE WITH
         </p>
-      </div>
+      </motion.div>
 
       {/* CRM Logos Bar — infinite marquee scroll */}
-      <div className="relative z-10 w-full bg-background mt-0 pb-12 overflow-hidden">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="relative z-10 w-full bg-background mt-0 pb-12 overflow-hidden"
+      >
         {/* Marquee track: three copies side-by-side for seamless loop */}
         <div className="flex animate-marquee" style={{ width: "max-content" }}>
           <img
@@ -146,7 +158,7 @@ const Hero = () => {
             }}
           />
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

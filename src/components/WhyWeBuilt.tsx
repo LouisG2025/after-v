@@ -11,7 +11,7 @@ const WhyWeBuilt = () => {
                 className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start w-full mb-12 will-change-transform"
             >
                 {/* Left Side: Heading */}
-                <div className="flex flex-col items-start gap-8 sticky top-32">
+                <div className="flex flex-col items-start gap-8 lg:sticky lg:top-32">
                     <div className="bg-[rgba(46,255,161,0.11)] px-[16px] py-[8px] rounded-[100px] inline-flex items-center justify-center font-inter font-semibold text-[14px] text-primary tracking-wide">
                         WHY WE BUILT AFTER5
                     </div>
