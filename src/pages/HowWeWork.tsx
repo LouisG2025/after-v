@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 // import HowWeWorkSection from '../components/HowWeWork';
 import DetailedProcess from '../components/DetailedProcess';
 import { Rocket } from 'lucide-react';
@@ -119,17 +120,19 @@ const WhereAfter5Fits = () => {
                         className="pt-10 space-y-8"
                     >
                         <p className="font-inter text-3xl text-primary">Ready to get started?</p>
-                        <button className="group flex items-center gap-6 bg-[#111827] text-white px-10 py-6 rounded-full font-bold text-xl hover:bg-black transition-all duration-300">
-                            Book a Discovery Call
-                            <div className="w-12 h-12 rounded-full bg-[#2EFFA1] flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <motion.div
-                                    animate={{ x: [0, 5, 0] }}
-                                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                                >
-                                    <Rocket className="w-6 h-6 text-black" />
-                                </motion.div>
-                            </div>
-                        </button>
+                        <Link to="/contact">
+                            <button className="group flex items-center gap-6 bg-[#111827] text-white px-10 py-6 rounded-full font-bold text-xl hover:bg-black transition-all duration-300">
+                                Book a Discovery Call
+                                <div className="w-12 h-12 rounded-full bg-[#2EFFA1] flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <motion.div
+                                        animate={{ x: [0, 5, 0] }}
+                                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                                    >
+                                        <Rocket className="w-6 h-6 text-black" />
+                                    </motion.div>
+                                </div>
+                            </button>
+                        </Link>
                     </motion.div>
                 </div>
             </div>

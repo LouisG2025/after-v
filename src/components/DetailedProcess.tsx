@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { MousePointer2, Zap, Search, Filter, CalendarCheck, MessageSquare, Database, BarChart3, Settings, Rocket, Target, Users } from 'lucide-react';
 
 const steps = [
@@ -126,20 +127,22 @@ const DetailedProcess = () => {
                             Ready to see how more leads could turn into revenue?
                         </motion.p>
 
-                        <motion.button
-                            initial={{ opacity: 0, y: 16 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.3 }}
-                            whileHover={{ scale: 1.04, backgroundColor: "#2EFFA1" }}
-                            whileTap={{ scale: 0.97 }}
-                            className="group flex items-center gap-4 bg-white text-black px-8 py-4 rounded-full font-bold text-lg transition-colors duration-300"
-                        >
-                            Book a Demo
-                            <div className="w-9 h-9 rounded-full bg-black/8 flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                                <Rocket className="w-4 h-4" />
-                            </div>
-                        </motion.button>
+                        <Link to="/demo">
+                            <motion.button
+                                initial={{ opacity: 0, y: 16 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.3 }}
+                                whileHover={{ scale: 1.04, backgroundColor: "#2EFFA1" }}
+                                whileTap={{ scale: 0.97 }}
+                                className="group flex items-center gap-4 bg-white text-black px-8 py-4 rounded-full font-bold text-lg transition-colors duration-300"
+                            >
+                                Book a Demo
+                                <div className="w-9 h-9 rounded-full bg-black/8 flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                    <Rocket className="w-4 h-4" />
+                                </div>
+                            </motion.button>
+                        </Link>
 
                         {/* Step counter */}
                         <div className="hidden lg:flex flex-col gap-4 pt-8">
