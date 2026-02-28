@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PageHero from '../components/PageHero';
 import { usePageMeta } from '../hooks/usePageMeta';
+import { useGlowTrigger } from '../hooks/useGlowTrigger';
 
 const DemoForm = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
