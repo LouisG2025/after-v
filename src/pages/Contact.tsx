@@ -21,6 +21,8 @@ const Contact = () => {
     const [enquiryType, setEnquiryType] = useState('');
     const [isCalendlyLoading, setIsCalendlyLoading] = useState(true);
     const [scriptLoaded, setScriptLoaded] = useState(false);
+    const [isAgreed, setIsAgreed] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     // 5 Figma variants — one per enquiry type
     const successVariants: Record<string, { heading: string; body: string }> = {
@@ -328,6 +330,7 @@ const Contact = () => {
                                             onClick={() => {
                                                 setFormSubmitted(false);
                                                 setEnquiryType('');
+                                                setIsAgreed(false);
                                             }}
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.98 }}
@@ -359,9 +362,15 @@ const Contact = () => {
                                 >
                                     <form
                                         className="space-y-10"
-                                        onSubmit={(e) => {
+                                        onSubmit={async (e) => {
                                             e.preventDefault();
-                                            setFormSubmitted(true);
+                                            setIsSubmitting(true);
+                                            // Simulate or implement real submission here if needed, 
+                                            // for now keeping the success state trigger
+                                            setTimeout(() => {
+                                                setFormSubmitted(true);
+                                                setIsSubmitting(false);
+                                            }, 1000);
                                         }}
                                     >
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
@@ -457,7 +466,14 @@ const Contact = () => {
                                             className="flex items-center gap-3 pt-2"
                                         >
                                             <div className="relative flex items-center">
-                                                <input type="checkbox" id="privacy" className="peer appearance-none w-5 h-5 border border-[#e2e8f0] rounded bg-white checked:bg-[#2EFFA1] checked:border-[#2EFFA1] transition-all cursor-pointer hover:border-[#2EFFA1]" />
+                                                <input
+                                                    type="checkbox"
+                                                    id="privacy"
+                                                    required
+                                                    checked={isAgreed}
+                                                    onChange={(e) => setIsAgreed(e.target.checked)}
+                                                    className="peer appearance-none w-5 h-5 border border-[#e2e8f0] rounded bg-white checked:bg-[#2EFFA1] checked:border-[#2EFFA1] transition-all cursor-pointer hover:border-[#2EFFA1]"
+                                                />
                                                 <svg className="absolute w-3.5 h-3.5 left-[3px] top-[3px] text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                                 </svg>
@@ -475,18 +491,19 @@ const Contact = () => {
                                         >
                                             <motion.button
                                                 type="submit"
-                                                whileHover="hover"
+                                                disabled={!isAgreed || isSubmitting}
+                                                whileHover={isAgreed ? "hover" : "rest"}
                                                 whileTap={{ scale: 0.98 }}
                                                 initial="rest"
                                                 animate="rest"
                                                 variants={{
-                                                    rest: { backgroundColor: '#0f172a', scale: 1 },
+                                                    rest: { backgroundColor: '#0f172a', scale: 1, opacity: isAgreed ? 1 : 0.5 },
                                                     hover: { backgroundColor: '#2EFFA1', scale: 1.02 }
                                                 }}
                                                 transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
-                                                className="relative px-14 py-4 md:py-5 rounded-full font-cabinet font-bold text-[16px] md:text-[18px] w-full md:w-auto overflow-hidden flex items-center justify-center gap-3 text-white"
+                                                className={`relative px-14 py-4 md:py-5 rounded-full font-cabinet font-bold text-[16px] md:text-[18px] w-full md:w-auto overflow-hidden flex items-center justify-center gap-3 text-white ${!isAgreed ? 'cursor-not-allowed' : ''}`}
                                             >
-                                                <span>Submit Enquiry</span>
+                                                <span>{isSubmitting ? 'Submitting...' : (!isAgreed ? 'Please accept terms' : 'Submit Enquiry')}</span>
 
                                                 <motion.svg
                                                     variants={{
