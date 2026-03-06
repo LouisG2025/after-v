@@ -8,6 +8,7 @@ import { useGlowTrigger } from '../hooks/useGlowTrigger';
 const DemoForm = () => {
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isAgreed, setIsAgreed] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -108,7 +109,10 @@ const DemoForm = () => {
                                         </motion.button>
                                     </Link>
                                     <motion.button
-                                        onClick={() => setFormSubmitted(false)}
+                                        onClick={() => {
+                                            setFormSubmitted(false);
+                                            setIsAgreed(false);
+                                        }}
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
                                         className="px-8 py-4 bg-white text-[#0f172a] border border-[#cbd5e1] rounded-full font-cabinet font-bold text-[16px] transition-all hover:border-[#0f172a] shadow-sm"
@@ -156,8 +160,8 @@ const DemoForm = () => {
                                     <div className="space-y-3">
                                         <label className="block text-[11px] font-cabinet font-bold text-[#475569] uppercase tracking-widest ml-1">WHERE DO MOST OF YOUR ENQUIRIES COME FROM?</label>
                                         <div className="relative">
-                                            <select name="origin" required className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-[16px] px-6 py-4 font-cabinet font-bold text-[17px] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 appearance-none cursor-pointer transition-all">
-                                                <option value="" disabled selected hidden>Select an option</option>
+                                            <select name="origin" required defaultValue="" className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-[16px] px-6 py-4 font-cabinet font-bold text-[17px] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 appearance-none cursor-pointer transition-all">
+                                                <option value="" disabled hidden>Select an option</option>
                                                 <option value="google">Google</option>
                                                 <option value="meta">Meta (FB/IG)</option>
                                                 <option value="referral">Referral</option>
@@ -184,22 +188,30 @@ const DemoForm = () => {
 
                                     <div className="flex items-start gap-4 pt-4">
                                         <div className="relative flex items-center pt-1">
-                                            <input type="checkbox" name="agree" required id="privacy-demo" className="peer appearance-none w-5 h-5 border border-[#cbd5e1] rounded bg-white checked:bg-[#2EFFA1] checked:border-[#2EFFA1] transition-all cursor-pointer" />
+                                            <input
+                                                type="checkbox"
+                                                name="agree"
+                                                required
+                                                id="privacy-demo"
+                                                checked={isAgreed}
+                                                onChange={(e) => setIsAgreed(e.target.checked)}
+                                                className="peer appearance-none w-5 h-5 border border-[#cbd5e1] rounded bg-white checked:bg-[#2EFFA1] checked:border-[#2EFFA1] transition-all cursor-pointer"
+                                            />
                                             <svg className="absolute w-3.5 h-3.5 left-[3px] top-[4px] text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                             </svg>
                                         </div>
-                                        <label htmlFor="privacy-demo" className="text-[13px] text-[#64748b] leading-snug">
-                                            By submitting, you agree to receive messages via WhatsApp, SMS, or email to run the demo, and you accept our <Link to="/privacy-policy" className="text-[#0f172a] hover:underline">[Privacy Policy]</Link> and <Link to="/terms-and-conditions" className="text-[#0f172a] hover:underline">[Terms & Conditions]</Link>.
+                                        <label htmlFor="privacy-demo" className="text-[13px] text-[#64748b] leading-snug cursor-pointer select-none">
+                                            By submitting, you agree to receive messages via WhatsApp, SMS, or email to run the demo, and you accept our <Link to="/privacy-policy" className="text-[#0f172a] hover:underline" onClick={(e) => e.stopPropagation()}>[Privacy Policy]</Link> and <Link to="/terms-and-conditions" className="text-[#0f172a] hover:underline" onClick={(e) => e.stopPropagation()}>[Terms & Conditions]</Link>.
                                         </label>
                                     </div>
 
                                     <button
                                         type="submit"
-                                        disabled={isSubmitting}
-                                        className="mt-12 px-12 py-5 bg-[#0f172a] text-white rounded-full font-cabinet font-bold text-[17px] shadow-[0_20px_40px_-10px_rgba(15,23,42,0.3)] hover:bg-[#1e293b] hover:scale-[1.02] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                                        disabled={isSubmitting || !isAgreed}
+                                        className="mt-12 px-12 py-5 bg-[#0f172a] text-white rounded-full font-cabinet font-bold text-[17px] shadow-[0_20px_40px_-10px_rgba(15,23,42,0.3)] hover:bg-[#1e293b] hover:scale-[1.02] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                                     >
-                                        {isSubmitting ? 'Submitting...' : 'Click Here to Get Started!'}
+                                        {isSubmitting ? 'Submitting...' : (!isAgreed ? 'Please accept terms to continue' : 'Click Here to Get Started!')}
                                     </button>
                                     {errorMsg && <p className="text-red-500 mt-4 text-sm font-medium">{errorMsg}</p>}
                                 </form>
