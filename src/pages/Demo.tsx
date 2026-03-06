@@ -206,13 +206,49 @@ const DemoForm = () => {
                                         </label>
                                     </div>
 
-                                    <button
-                                        type="submit"
-                                        disabled={isSubmitting || !isAgreed}
-                                        className="mt-12 px-12 py-5 bg-[#0f172a] text-white rounded-full font-cabinet font-bold text-[17px] shadow-[0_20px_40px_-10px_rgba(15,23,42,0.3)] hover:bg-[#1e293b] hover:scale-[1.02] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                                    <motion.div
+                                        variants={{
+                                            hidden: { opacity: 0, scale: 0.95 },
+                                            visible: { opacity: 1, scale: 1 }
+                                        }}
                                     >
-                                        {isSubmitting ? 'Submitting...' : (!isAgreed ? 'Please accept terms to continue' : 'Click Here to Get Started!')}
-                                    </button>
+                                        <motion.button
+                                            type="submit"
+                                            disabled={isSubmitting || !isAgreed}
+                                            whileHover={isAgreed ? "hover" : "rest"}
+                                            whileTap={{ scale: 0.98 }}
+                                            initial="rest"
+                                            animate="rest"
+                                            variants={{
+                                                rest: { backgroundColor: '#0f172a', scale: 1, opacity: isAgreed ? 1 : 0.5 },
+                                                hover: { backgroundColor: '#2EFFA1', scale: 1.02 }
+                                            }}
+                                            transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
+                                            className={`mt-12 relative px-14 py-4 md:py-5 rounded-full font-cabinet font-bold text-[17px] w-full md:w-auto overflow-hidden flex items-center justify-center gap-3 text-white shadow-[0_20px_40px_-10px_rgba(15,23,42,0.3)] ${!isAgreed ? 'cursor-not-allowed' : ''}`}
+                                        >
+                                            <span>{isSubmitting ? 'Submitting...' : (!isAgreed ? 'Please accept terms to continue' : 'Click Here to Get Started!')}</span>
+
+                                            {isAgreed && !isSubmitting && (
+                                                <motion.svg
+                                                    variants={{
+                                                        rest: { x: -4, opacity: 0 },
+                                                        hover: { x: 0, opacity: 1 }
+                                                    }}
+                                                    transition={{ duration: 0.25 }}
+                                                    className="w-5 h-5 ml-1"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2.5"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                >
+                                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                                </motion.svg>
+                                            )}
+                                        </motion.button>
+                                    </motion.div>
                                     {errorMsg && <p className="text-red-500 mt-4 text-sm font-medium">{errorMsg}</p>}
                                 </form>
                             </div>
