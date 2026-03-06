@@ -24,18 +24,21 @@ export default async function handler(
         const adminEmailData = await resend.emails.send({
             from: 'Demo Request <onboarding@resend.dev>', // Change this to your verified domain (e.g. notifications@after5.ai)
             to: process.env.ADMIN_EMAIL || 'admin@example.com', // Replace with admin email
-            subject: 'New Demo Request Received',
+            subject: 'New Demo Request Received - After5 Digital',
             html: `
-        <h2>New demo request submitted</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Company:</strong> ${company}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        ${origin ? `<p><strong>Source:</strong> ${origin}</p>` : ''}
-        <p><strong>Message / Use Case:</strong></p>
-        <blockquote style="background: #f1f5f9; padding: 10px; border-left: 4px solid #cbd5e1;">
-          ${message.replace(/\n/g, '<br/>')}
-        </blockquote>
+        <h2 style="color: #0f172a;">New demo request submitted</h2>
+        <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Company:</strong> ${company}</p>
+            <p><strong>Phone:</strong> ${phone}</p>
+            ${origin ? `<p><strong>Source:</strong> ${origin}</p>` : ''}
+            <br/>
+            <p><strong>Message / Use Case:</strong></p>
+            <blockquote style="background: #ffffff; padding: 15px; border-left: 4px solid #2EFFA1; border-radius: 4px; border: 1px solid #e2e8f0;">
+              ${message.replace(/\n/g, '<br/>')}
+            </blockquote>
+        </div>
       `,
         });
 
@@ -44,18 +47,16 @@ export default async function handler(
             return res.status(500).json({ error: 'Failed to send admin notification email' });
         }
 
-        // 2. (Optional) Send User Confirmation Email
-        // Note: Once you have a verified domain on Resend, you can send to any email address.
-        // While on the free tier testing, you can only send to verified emails or you must use the onboarding@resend.dev.
+        // 2. Send User Confirmation Email
         if (process.env.NODE_ENV === 'production' && process.env.VERIFIED_DOMAIN) {
             const userEmailData = await resend.emails.send({
                 from: `After5 Team <hello@${process.env.VERIFIED_DOMAIN}>`,
                 to: email,
-                subject: 'Your Demo Request Has Been Received',
+                subject: 'Your After5 Demo Request',
                 html: `
           <p>Hi ${name.split(' ')[0] || name},</p>
           <p>Thank you for requesting a demo with After5 Digital.</p>
-          <p>We've received your request and our team will contact you shortly to get things moving.</p>
+          <p>We've received your request and our team will contact you shortly to schedule your personalized demo session.</p>
           <br/>
           <p>Best regards,</p>
           <p>The After5 Team</p>

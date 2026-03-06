@@ -376,12 +376,29 @@ const Contact = () => {
                                         onSubmit={async (e) => {
                                             e.preventDefault();
                                             setIsSubmitting(true);
-                                            // Simulate or implement real submission here if needed, 
-                                            // for now keeping the success state trigger
-                                            setTimeout(() => {
+                                            try {
+                                                const response = await fetch('/api/contact-request', {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                    },
+                                                    body: JSON.stringify({
+                                                        ...formData,
+                                                        enquiryType: enquiryType
+                                                    }),
+                                                });
+
+                                                if (!response.ok) {
+                                                    const data = await response.json();
+                                                    throw new Error(data.error || 'Something went wrong');
+                                                }
+
                                                 setFormSubmitted(true);
+                                            } catch (error: any) {
+                                                alert(error.message || 'Failed to submit enquiry. Please try again.');
+                                            } finally {
                                                 setIsSubmitting(false);
-                                            }, 1000);
+                                            }
                                         }}
                                     >
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
