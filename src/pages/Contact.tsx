@@ -23,6 +23,17 @@ const Contact = () => {
     const [scriptLoaded, setScriptLoaded] = useState(false);
     const [isAgreed, setIsAgreed] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [formData, setFormData] = useState({
+        enquiryType: '',
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        industry: '',
+        message: ''
+    });
+
+    const isFormValid = formData.name && formData.email && formData.phone && formData.company && formData.industry && formData.message && enquiryType;
 
     // 5 Figma variants — one per enquiry type
     const successVariants: Record<string, { heading: string; body: string }> = {
@@ -397,7 +408,7 @@ const Contact = () => {
                                                                     onChange={(e) => setEnquiryType(e.target.value)}
                                                                     className="w-full bg-[#f8fafc] border border-[#e2e8f0] rounded-[16px] px-6 py-4 text-[#0f172a] font-cabinet font-bold text-[17px] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 appearance-none cursor-pointer transition-all"
                                                                 >
-                                                                    <option value="" disabled selected hidden>Select an option</option>
+                                                                    <option value="" disabled hidden>Select an option</option>
                                                                     {field.options?.map(opt => <option key={opt} value={opt.toLowerCase()}>{opt}</option>)}
                                                                 </select>
                                                                 <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none transition-transform">
@@ -409,6 +420,11 @@ const Contact = () => {
                                                         ) : (
                                                             <input
                                                                 type={field.type}
+                                                                value={field.label === 'Work Email' ? formData.email : formData.phone}
+                                                                onChange={(e) => setFormData(prev => ({
+                                                                    ...prev,
+                                                                    [field.label === 'Work Email' ? 'email' : 'phone']: e.target.value
+                                                                }))}
                                                                 placeholder={field.placeholder}
                                                                 className="w-full bg-[#f8fafc] border border-[#e2e8f0] rounded-[16px] px-6 py-4 text-[#0f172a] font-cabinet font-bold text-[17px] placeholder:text-[#cbd5e1] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 transition-all"
                                                             />
@@ -435,6 +451,11 @@ const Contact = () => {
                                                         <label className="block text-[11px] font-cabinet font-bold text-[#475569] uppercase tracking-widest ml-1">{field.label}</label>
                                                         <input
                                                             type={field.type}
+                                                            value={field.label === 'Your Full Name' ? formData.name : (field.label === 'Company Name' ? formData.company : formData.industry)}
+                                                            onChange={(e) => setFormData(prev => ({
+                                                                ...prev,
+                                                                [field.label === 'Your Full Name' ? 'name' : (field.label === 'Company Name' ? 'company' : 'industry')]: e.target.value
+                                                            }))}
                                                             placeholder={field.placeholder}
                                                             className="w-full bg-[#f8fafc] border border-[#e2e8f0] rounded-[16px] px-6 py-4 text-[#0f172a] font-cabinet font-bold text-[17px] placeholder:text-[#cbd5e1] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 transition-all"
                                                         />
@@ -453,6 +474,8 @@ const Contact = () => {
                                             <label className="block text-[11px] font-cabinet font-bold text-[#475569] uppercase tracking-widest ml-1">Message</label>
                                             <textarea
                                                 rows={4}
+                                                value={formData.message}
+                                                onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                                                 placeholder="Tell us more about your needs..."
                                                 className="w-full bg-[#f8fafc] border border-[#e2e8f0] rounded-[16px] px-6 py-4 text-[#0f172a] font-cabinet font-bold text-[17px] placeholder:text-[#cbd5e1] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 resize-none transition-all min-h-[120px]"
                                             />
@@ -491,19 +514,19 @@ const Contact = () => {
                                         >
                                             <motion.button
                                                 type="submit"
-                                                disabled={!isAgreed || isSubmitting}
-                                                whileHover={isAgreed ? "hover" : "rest"}
+                                                disabled={!isFormValid || !isAgreed || isSubmitting}
+                                                whileHover={isFormValid && isAgreed ? "hover" : "rest"}
                                                 whileTap={{ scale: 0.98 }}
                                                 initial="rest"
                                                 animate="rest"
                                                 variants={{
-                                                    rest: { backgroundColor: '#0f172a', scale: 1, opacity: isAgreed ? 1 : 0.5 },
+                                                    rest: { backgroundColor: '#0f172a', scale: 1, opacity: (isFormValid && isAgreed) ? 1 : 0.5 },
                                                     hover: { backgroundColor: '#2EFFA1', scale: 1.02 }
                                                 }}
                                                 transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
-                                                className={`relative px-14 py-4 md:py-5 rounded-full font-cabinet font-bold text-[16px] md:text-[18px] w-full md:w-auto overflow-hidden flex items-center justify-center gap-3 text-white ${!isAgreed ? 'cursor-not-allowed' : ''}`}
+                                                className={`relative px-14 py-4 md:py-5 rounded-full font-cabinet font-bold text-[16px] md:text-[18px] w-full md:w-auto overflow-hidden flex items-center justify-center gap-3 text-white ${(!isFormValid || !isAgreed) ? 'cursor-not-allowed' : ''}`}
                                             >
-                                                <span>{isSubmitting ? 'Submitting...' : (!isAgreed ? 'Please accept terms' : 'Submit Enquiry')}</span>
+                                                <span>{isSubmitting ? 'Submitting...' : (!isFormValid ? 'Please fill all details' : (!isAgreed ? 'Please accept terms' : 'Submit Enquiry'))}</span>
 
                                                 <motion.svg
                                                     variants={{

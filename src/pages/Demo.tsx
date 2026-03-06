@@ -10,6 +10,18 @@ const DemoForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isAgreed, setIsAgreed] = useState(false);
     const [errorMsg, setErrorMsg] = useState('');
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        company: '',
+        industry: '',
+        origin: '',
+        message: ''
+    });
+
+    const isFormValid = formData.firstName && formData.lastName && formData.email && formData.phone && formData.company && formData.industry && formData.origin && formData.message;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -112,6 +124,16 @@ const DemoForm = () => {
                                         onClick={() => {
                                             setFormSubmitted(false);
                                             setIsAgreed(false);
+                                            setFormData({
+                                                firstName: '',
+                                                lastName: '',
+                                                email: '',
+                                                phone: '',
+                                                company: '',
+                                                industry: '',
+                                                origin: '',
+                                                message: ''
+                                            });
                                         }}
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
@@ -150,6 +172,8 @@ const DemoForm = () => {
                                                     type={field.type || "text"}
                                                     name={field.name}
                                                     required
+                                                    value={(formData as any)[field.name]}
+                                                    onChange={(e) => setFormData(prev => ({ ...prev, [field.name]: e.target.value }))}
                                                     placeholder={field.placeholder}
                                                     className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-[16px] px-6 py-4 font-cabinet font-bold text-[17px] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 transition-all placeholder:text-[#94a3b8]"
                                                 />
@@ -160,7 +184,13 @@ const DemoForm = () => {
                                     <div className="space-y-3">
                                         <label className="block text-[11px] font-cabinet font-bold text-[#475569] uppercase tracking-widest ml-1">WHERE DO MOST OF YOUR ENQUIRIES COME FROM?</label>
                                         <div className="relative">
-                                            <select name="origin" required defaultValue="" className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-[16px] px-6 py-4 font-cabinet font-bold text-[17px] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 appearance-none cursor-pointer transition-all">
+                                            <select
+                                                name="origin"
+                                                required
+                                                value={formData.origin}
+                                                onChange={(e) => setFormData(prev => ({ ...prev, origin: e.target.value }))}
+                                                className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-[16px] px-6 py-4 font-cabinet font-bold text-[17px] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 appearance-none cursor-pointer transition-all"
+                                            >
                                                 <option value="" disabled hidden>Select an option</option>
                                                 <option value="google">Google</option>
                                                 <option value="meta">Meta (FB/IG)</option>
@@ -180,6 +210,8 @@ const DemoForm = () => {
                                         <textarea
                                             name="message"
                                             required
+                                            value={formData.message}
+                                            onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                                             rows={4}
                                             placeholder="How can we help you?"
                                             className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-[16px] px-6 py-4 font-cabinet font-bold text-[17px] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 resize-none transition-all placeholder:text-[#94a3b8]"
@@ -214,19 +246,19 @@ const DemoForm = () => {
                                     >
                                         <motion.button
                                             type="submit"
-                                            disabled={isSubmitting || !isAgreed}
-                                            whileHover={isAgreed ? "hover" : "rest"}
+                                            disabled={isSubmitting || !isAgreed || !isFormValid}
+                                            whileHover={(isAgreed && isFormValid) ? "hover" : "rest"}
                                             whileTap={{ scale: 0.98 }}
                                             initial="rest"
                                             animate="rest"
                                             variants={{
-                                                rest: { backgroundColor: '#0f172a', scale: 1, opacity: isAgreed ? 1 : 0.5 },
+                                                rest: { backgroundColor: '#0f172a', scale: 1, opacity: (isAgreed && isFormValid) ? 1 : 0.5 },
                                                 hover: { backgroundColor: '#2EFFA1', scale: 1.02 }
                                             }}
                                             transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
-                                            className={`mt-12 relative px-14 py-4 md:py-5 rounded-full font-cabinet font-bold text-[17px] w-full md:w-auto overflow-hidden flex items-center justify-center gap-3 text-white shadow-[0_20px_40px_-10px_rgba(15,23,42,0.3)] ${!isAgreed ? 'cursor-not-allowed' : ''}`}
+                                            className={`mt-12 relative px-14 py-4 md:py-5 rounded-full font-cabinet font-bold text-[17px] w-full md:w-auto overflow-hidden flex items-center justify-center gap-3 text-white shadow-[0_20px_40px_-10px_rgba(15,23,42,0.3)] ${(!isAgreed || !isFormValid) ? 'cursor-not-allowed' : ''}`}
                                         >
-                                            <span>{isSubmitting ? 'Submitting...' : (!isAgreed ? 'Please accept terms to continue' : 'Click Here to Get Started!')}</span>
+                                            <span>{isSubmitting ? 'Submitting...' : (!isFormValid ? 'Please fill all details' : (!isAgreed ? 'Please accept terms to continue' : 'Click Here to Get Started!'))}</span>
 
                                             {isAgreed && !isSubmitting && (
                                                 <motion.svg
