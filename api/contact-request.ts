@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
+import { supabase } from './_lib/supabase';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -18,6 +19,25 @@ export default async function handler(
         // Validate required fields
         if (!name || !email || !company || !phone || !message || !enquiryType || !industry) {
             return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        // 0. Insert into Supabase
+        try {
+            const { error: dbError } = await supabase.from('leads').insert([
+                {
+                    name,
+                    email,
+                    phone,
+                    company,
+                    industry,
+                    message,
+                    enquiry_type: enquiryType
+                }
+            ]);
+
+            if (dbError) throw dbError;
+        } catch (dbError) {
+            console.error("Supabase Database Error:", dbError);
         }
 
         // 1. Send Admin Notification Email
