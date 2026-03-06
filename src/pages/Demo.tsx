@@ -96,7 +96,7 @@ const DemoForm = () => {
                             >
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-8 h-8 rounded-full bg-[#2EFFA1] flex items-center justify-center text-white shrink-0 shadow-[0_0_15px_rgba(54,215,142,0.4)]">
+                                        <div className="w-8 h-8 rounded-full bg-accent-green flex items-center justify-center text-white shrink-0 shadow-[0_0_15px_rgba(54,215,142,0.4)]">
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                                                 <polyline points="20 6 9 17 4 12" />
                                             </svg>
@@ -227,7 +227,7 @@ const DemoForm = () => {
                                                 id="privacy-demo"
                                                 checked={isAgreed}
                                                 onChange={(e) => setIsAgreed(e.target.checked)}
-                                                className="peer appearance-none w-5 h-5 border border-[#cbd5e1] rounded bg-white checked:bg-[#2EFFA1] checked:border-[#2EFFA1] transition-all cursor-pointer"
+                                                className="peer appearance-none w-5 h-5 border border-[#cbd5e1] rounded bg-white checked:bg-accent-green checked:border-accent-green transition-all cursor-pointer"
                                             />
                                             <svg className="absolute w-3.5 h-3.5 left-[3px] top-[4px] text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
@@ -305,7 +305,7 @@ const DemoForm = () => {
                                 className="inline-flex items-center gap-4 bg-[#0f172a] text-white pl-8 pr-2 py-2 rounded-full font-cabinet font-bold text-[16px] transition-all hover:bg-[#1e293b] group"
                             >
                                 Book a Strategy Call
-                                <span className="w-10 h-10 rounded-full bg-[#2EFFA1] flex items-center justify-center shrink-0">
+                                <span className="w-10 h-10 rounded-full bg-accent-green flex items-center justify-center shrink-0">
                                     <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
                                         <path d="M3 8h10M9 4l4 4-4 4" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
