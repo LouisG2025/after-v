@@ -81,11 +81,11 @@ export default async function handler(
 
             // Use global fetch
             if (typeof fetch === 'function') {
-                fetch(albertUrl, {
+                await fetch(albertUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
-                }).catch((e: any) => console.error("Albert Webhook Fetch Error:", e));
+                });
             }
         } catch (err: any) {
             console.error("Albert Webhook Init Error:", err.message);
