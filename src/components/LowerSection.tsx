@@ -247,7 +247,7 @@ const LowerSection = () => {
                             </motion.div>
 
                             {/* Stage Two & Three Transition Area */}
-                            <div className="w-full flex justify-between items-center px-4 mt-6 mb-6">
+                            <div className="w-full flex flex-wrap justify-between items-center px-4 gap-y-6 mt-6 mb-6">
                                 {/* Stage Two (Left) */}
                                 <motion.div 
                                     initial={{ opacity: 0, x: -10 }}
@@ -295,7 +295,7 @@ const LowerSection = () => {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.8, delay: 0.6 }}
-                                className="w-full bg-[#1A1A1A] rounded-[32px] p-6 md:p-10 border border-white/5 shadow-inner"
+                                className="w-full bg-[#1A1A1A] rounded-[32px] p-4 sm:p-6 md:p-10 border border-white/5 shadow-inner"
                             >
                                 <div className="flex flex-col gap-4">
                                     {/* Lead 1: Gwen */}
@@ -304,16 +304,16 @@ const LowerSection = () => {
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ duration: 0.6, delay: 0.8 }}
-                                        className="bg-[#2A2A2A] rounded-2xl p-4 flex items-center justify-between border border-white/5 shadow-lg shadow-black/20"
+                                        className="bg-[#2A2A2A] rounded-2xl p-3 sm:p-4 flex flex-col min-[420px]:flex-row items-start min-[420px]:items-center justify-between gap-4 border border-white/5 shadow-lg shadow-black/20"
                                     >
                                         <div className="flex items-center gap-3">
-                                            <img src="/assets/gwen-avatar.png" alt="Gwen S." className="w-12 h-12 rounded-full object-cover shadow-md" />
+                                            <img src="/assets/gwen-avatar.png" alt="Gwen S." className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover shadow-md" />
                                             <div className="flex flex-col items-start text-left">
-                                                <span className="text-white font-inter font-bold text-[16px]">Gwen S.</span>
-                                                <span className="bg-[#36d78e]/10 text-[#36d78e] px-2 py-0.5 rounded text-[11px] font-bold mt-1">Qualified</span>
+                                                <span className="text-white font-inter font-bold text-[15px] sm:text-[16px]">Gwen S.</span>
+                                                <span className="bg-[#36d78e]/10 text-[#36d78e] px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-bold mt-1">Qualified</span>
                                             </div>
                                         </div>
-                                        <button className="bg-white/5 text-white/70 px-4 py-2 rounded-xl text-[12px] font-bold border border-white/10 flex items-center gap-2 transition-colors hover:bg-white/10">
+                                        <button className="w-full min-[420px]:w-auto bg-white/5 text-white/70 px-4 py-2 rounded-xl text-[12px] font-bold border border-white/10 flex items-center justify-center min-[420px]:justify-start gap-2 transition-colors hover:bg-white/10">
                                             View Profile <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
                                         </button>
                                     </motion.div>
@@ -324,16 +324,16 @@ const LowerSection = () => {
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ duration: 0.6, delay: 1 }}
-                                        className="bg-[#2A2A2A] rounded-2xl p-4 flex items-center justify-between border border-white/5"
+                                        className="bg-[#2A2A2A] rounded-2xl p-3 sm:p-4 flex flex-col min-[420px]:flex-row items-start min-[420px]:items-center justify-between gap-4 border border-white/5"
                                     >
                                         <div className="flex items-center gap-3">
-                                            <img src="/assets/robert-avatar.png" alt="Robert M." className="w-12 h-12 rounded-full object-cover opacity-80" />
+                                            <img src="/assets/robert-avatar.png" alt="Robert M." className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover opacity-80" />
                                             <div className="flex flex-col items-start text-left">
-                                                <span className="text-white font-inter font-bold text-[16px]">Robert M.</span>
-                                                <span className="bg-[#FF9500]/10 text-[#FF9500] px-2 py-0.5 rounded text-[11px] font-bold mt-1 whitespace-nowrap">Pending 70% complete</span>
+                                                <span className="text-white font-inter font-bold text-[15px] sm:text-[16px]">Robert M.</span>
+                                                <span className="bg-[#FF9500]/10 text-[#FF9500] px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-bold mt-1 whitespace-normal min-[420px]:whitespace-nowrap">Pending 70% complete</span>
                                             </div>
                                         </div>
-                                        <button className="bg-white/5 text-white/70 px-4 py-2 rounded-xl text-[12px] font-bold border border-white/10 flex items-center gap-2">
+                                        <button className="w-full min-[420px]:w-auto bg-white/5 text-white/70 px-4 py-2 rounded-xl text-[12px] font-bold border border-white/10 flex items-center justify-center min-[420px]:justify-start gap-2">
                                             View Profile <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
                                         </button>
                                     </motion.div>
@@ -344,16 +344,16 @@ const LowerSection = () => {
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ duration: 0.6, delay: 1.2 }}
-                                        className="bg-[#2A2A2A] rounded-2xl p-4 flex items-center justify-between border border-white/5"
+                                        className="bg-[#2A2A2A] rounded-2xl p-3 sm:p-4 flex flex-col min-[420px]:flex-row items-start min-[420px]:items-center justify-between gap-4 border border-white/5"
                                     >
                                         <div className="flex items-center gap-3">
-                                            <img src="/assets/norman-avatar.png" alt="Norman C." className="w-12 h-12 rounded-full object-cover opacity-80" />
+                                            <img src="/assets/norman-avatar.png" alt="Norman C." className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover opacity-80" />
                                             <div className="flex flex-col items-start text-left">
-                                                <span className="text-white font-inter font-bold text-[16px]">Norman C.</span>
-                                                <span className="bg-[#FF9500]/10 text-[#FF9500] px-2 py-0.5 rounded text-[11px] font-bold mt-1 whitespace-nowrap">Pending 35% complete</span>
+                                                <span className="text-white font-inter font-bold text-[15px] sm:text-[16px]">Norman C.</span>
+                                                <span className="bg-[#FF9500]/10 text-[#FF9500] px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-bold mt-1 whitespace-normal min-[420px]:whitespace-nowrap">Pending 35% complete</span>
                                             </div>
                                         </div>
-                                        <button className="bg-white/5 text-white/70 px-4 py-2 rounded-xl text-[12px] font-bold border border-white/10 flex items-center gap-2">
+                                        <button className="w-full min-[420px]:w-auto bg-white/5 text-white/70 px-4 py-2 rounded-xl text-[12px] font-bold border border-white/10 flex items-center justify-center min-[420px]:justify-start gap-2">
                                             View Profile <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
                                         </button>
                                     </motion.div>
