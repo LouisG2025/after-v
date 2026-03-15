@@ -2,7 +2,8 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
 import { supabase } from './_lib/supabase';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend lazily
+let resend: Resend;
 
 export default async function handler(
     req: VercelRequest,
@@ -35,9 +36,11 @@ export default async function handler(
                 }
             ]);
 
-            if (dbError) throw dbError;
+            if (dbError) {
+                console.error("Supabase Database Error:", dbError);
+            }
         } catch (dbError) {
-            console.error("Supabase Database Error:", dbError);
+            console.error("Supabase Connection Error:", dbError);
         }
 
         /* Email sending temporarily disabled

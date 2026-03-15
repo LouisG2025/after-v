@@ -2,7 +2,8 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
 import { supabase } from './_lib/supabase';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Initialize Resend lazily only when needed
+let resend: Resend;
 
 export default async function handler(
     req: VercelRequest,
@@ -38,27 +39,30 @@ export default async function handler(
             if (dbError) throw dbError;
 
             // 0.1 Notify Albert AI Agent for WhatsApp outreach
-            // We use a fire-and-forget approach with a small timeout to not delay the user
             try {
-                fetch('https://after5-agent-production.up.railway.app/form-webhook', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        first_name: name.split(' ')[0] || name,
-                        name: name,
-                        phone: phone,
-                        company: company,
-                        industry: industry,
-                        message: message,
-                        source: 'website_demo_form'
-                    })
-                }).catch(e => console.error("Albert Webhook Error (Silent):", e));
+                // Use globalThis.fetch to be safe in different Node environments
+                const globalFetch = (globalThis as any).fetch;
+                if (typeof globalFetch === 'function') {
+                    globalFetch('https://after5-agent-production.up.railway.app/form-webhook', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            first_name: name.split(' ')[0] || name,
+                            name: name,
+                            phone: phone,
+                            company: company,
+                            industry: industry,
+                            message: message,
+                            source: 'website_demo_form'
+                        })
+                    }).catch((e: any) => console.error("Albert Webhook Error (Silent):", e));
+                }
             } catch (albertError) {
                 console.error("Albert Notification Failed:", albertError);
             }
         } catch (dbError) {
             console.error("Supabase Database Error:", dbError);
-            // We continue with email sending even if DB fails, but log the error
+            // We continue even if DB fails to not block the user UI
         }
 
         /* Email sending temporarily disabled 
