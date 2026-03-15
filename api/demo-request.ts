@@ -4,8 +4,12 @@ import { supabase } from './_lib/supabase';
 
 // Initialize Resend safely
 const getResend = () => {
-    if (!process.env.RESEND_API_KEY) return null;
-    return new Resend(process.env.RESEND_API_KEY);
+    try {
+        if (!process.env.RESEND_API_KEY) return null;
+        return new Resend(process.env.RESEND_API_KEY);
+    } catch (e) {
+        return null;
+    }
 };
 
 export default async function handler(
@@ -21,7 +25,8 @@ export default async function handler(
             return res.status(405).json({ error: 'Method Not Allowed' });
         }
 
-        const { name, email, company, phone, message, industry } = req.body;
+        const body = req.body || {};
+        const { name, email, company, phone, message, industry } = body;
 
         // Validate required fields
         if (!name || !email || !company || !phone || !message) {
@@ -31,7 +36,7 @@ export default async function handler(
         // 3. Insert into Supabase with extra safety
         if (supabase) {
             try {
-                const { error: dbError } = await (supabase as any).from('leads').insert([
+                await (supabase as any).from('leads').insert([
                     {
                         name,
                         email,
@@ -42,13 +47,13 @@ export default async function handler(
                         enquiry_type: 'demo'
                     }
                 ]);
-                if (dbError) console.error("Supabase Insert Error:", dbError);
-            } catch (err: any) {
-                console.error("Supabase Try/Catch Error:", err.message);
+            } catch (dbErr: any) {
+                console.error("Supabase Error:", dbErr.message);
+                // We DON'T return 500 here, we want the user to see success even if DB is slow
             }
         }
 
-        // 4. Webhook Notification (Fire and forget safely)
+        // 4. Webhook Notification (Albert Agent)
         try {
             const albertUrl = 'https://after5-agent-production.up.railway.app/form-webhook';
             const payload = {
@@ -61,18 +66,18 @@ export default async function handler(
                 source: 'website_demo_form'
             };
 
-            // Use globalThis.fetch to be safe
-            (globalThis as any).fetch?.(albertUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).catch((e: any) => console.error("Albert Webhook Fetch Error:", e));
+            // Use global fetch
+            if (typeof fetch === 'function') {
+                fetch(albertUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).catch((e: any) => console.error("Albert Webhook Fetch Error:", e));
+            }
         } catch (err: any) {
             console.error("Albert Webhook Init Error:", err.message);
         }
 
-        // Emails temporarily disabled per user request
-        
         return res.status(200).json({ success: true });
 
     } catch (error: any) {
