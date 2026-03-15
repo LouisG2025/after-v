@@ -1,6 +1,13 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
-import { supabase } from './_lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+
+// Safe Supabase Init
+const getSupabase = () => {
+    const url = process.env.SUPABASE_URL || '';
+    const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
+    return url ? createClient(url, key) : null;
+};
 
 // Initialize Resend safely
 const getResend = () => {
