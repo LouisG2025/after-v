@@ -54,8 +54,14 @@ const DemoForm = () => {
             });
 
             if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.error || 'Something went wrong');
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    throw new Error(data.error || 'Something went wrong');
+                } else {
+                    // This handles the "A server error occurred" HTML cases gracefully
+                    throw new Error('Server error: Please try again later or contact us directly.');
+                }
             }
 
             setFormSubmitted(true);
