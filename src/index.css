@@ -61,6 +61,4 @@ body > .calendly-inline-widget {
 }
 
 /* Ensure the widget stays hidden if it's somehow not a sibling but still root-level */
-#root + div[style*="position: fixed"] {
-    display: none !important;
-}
+

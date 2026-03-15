@@ -2,14 +2,20 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
 import { createClient } from '@supabase/supabase-js';
 
-// Safe Supabase Init
+// Safe Supabase Init Inline
 const getSupabase = () => {
-    const url = process.env.SUPABASE_URL || '';
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
-    return url ? createClient(url, key) : null;
+    try {
+        const url = process.env.SUPABASE_URL || '';
+        const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || '';
+        if (!url || !key) return null;
+        return createClient(url, key);
+    } catch (e) {
+        console.error("Supabase Init Error:", e);
+        return null;
+    }
 };
 
-// Initialize Resend safely
+// Safe Resend Init Inline
 const getResend = () => {
     try {
         if (!process.env.RESEND_API_KEY) return null;
@@ -26,7 +32,7 @@ export default async function handler(
     // 1. Force JSON header immediately
     res.setHeader('Content-Type', 'application/json');
 
-    // 2. Wrap EVERYTHING in a master try-catch
+    // 2. Master try-catch for stability
     try {
         if (req.method !== 'POST') {
             return res.status(405).json({ error: 'Method Not Allowed' });
@@ -40,10 +46,11 @@ export default async function handler(
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        // 3. Insert into Supabase with extra safety
+        // 3. Insert into Supabase
+        const supabase = getSupabase();
         if (supabase) {
             try {
-                await (supabase as any).from('leads').insert([
+                await supabase.from('leads').insert([
                     {
                         name,
                         email,
@@ -55,8 +62,7 @@ export default async function handler(
                     }
                 ]);
             } catch (dbErr: any) {
-                console.error("Supabase Error:", dbErr.message);
-                // We DON'T return 500 here, we want the user to see success even if DB is slow
+                console.error("Supabase Insert Error:", dbErr.message);
             }
         }
 
@@ -85,6 +91,7 @@ export default async function handler(
             console.error("Albert Webhook Init Error:", err.message);
         }
 
+        // Response
         return res.status(200).json({ success: true });
 
     } catch (error: any) {
