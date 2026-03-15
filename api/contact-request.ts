@@ -2,19 +2,25 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
 import { supabase } from './_lib/supabase';
 
-// Initialize Resend lazily
-let resend: Resend;
+// Initialize Resend safely
+const getResend = () => {
+    if (!process.env.RESEND_API_KEY) return null;
+    return new Resend(process.env.RESEND_API_KEY);
+};
 
 export default async function handler(
     req: VercelRequest,
     res: VercelResponse
 ) {
-    // Only allow POST requests
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method Not Allowed' });
-    }
+    // 1. Force JSON header immediately
+    res.setHeader('Content-Type', 'application/json');
 
+    // 2. Wrap EVERYTHING in a master try-catch
     try {
+        if (req.method !== 'POST') {
+            return res.status(405).json({ error: 'Method Not Allowed' });
+        }
+
         const { name, email, company, phone, message, enquiryType, industry } = req.body;
 
         // Validate required fields
@@ -22,76 +28,41 @@ export default async function handler(
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        // 0. Insert into Supabase
-        try {
-            const { error: dbError } = await supabase.from('leads').insert([
-                {
-                    name,
-                    email,
-                    phone,
-                    company,
-                    industry,
-                    message,
-                    enquiry_type: enquiryType
-                }
-            ]);
-
-            if (dbError) {
-                console.error("Supabase Database Error:", dbError);
+        // 3. Insert into Supabase with extra safety
+        if (supabase) {
+            try {
+                const { error: dbError } = await (supabase as any).from('leads').insert([
+                    {
+                        name,
+                        email,
+                        phone,
+                        company,
+                        industry,
+                        message,
+                        enquiry_type: enquiryType
+                    }
+                ]);
+                if (dbError) console.error("Supabase Insert Error:", dbError);
+            } catch (err: any) {
+                console.error("Supabase Try/Catch Error:", err.message);
             }
-        } catch (dbError) {
-            console.error("Supabase Connection Error:", dbError);
         }
 
-        /* Email sending temporarily disabled
-        const adminEmailData = await resend.emails.send({
-            from: process.env.VERIFIED_DOMAIN ? `Contact Enquiry <notifications@${process.env.VERIFIED_DOMAIN}>` : 'Contact Enquiry <onboarding@resend.dev>',
-            to: process.env.ADMIN_EMAIL || 'admin@example.com',
-            subject: `New ${enquiryType.toUpperCase()} Received - After5`,
-            html: `
-        <h2>New contact form submission</h2>
-        <p><strong>Enquiry Type:</strong> ${enquiryType}</p>
-        <hr/>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Company:</strong> ${company}</p>
-        <p><strong>Industry:</strong> ${industry}</p>
-        <br/>
-        <p><strong>Message:</strong></p>
-        <blockquote style="background: #f8fafc; padding: 15px; border-left: 4px solid #2EFFA1; border-radius: 4px;">
-          ${message.replace(/\n/g, '<br/>')}
-        </blockquote>
-      `,
-        });
-
-        if (adminEmailData.error) {
-            console.error("Resend Admin Email Error:", adminEmailData.error);
-            return res.status(500).json({ error: 'Failed to send enquiry to admin' });
-        }
-
-        // 2. Send User Confirmation Email
-        if (process.env.NODE_ENV === 'production' && process.env.VERIFIED_DOMAIN) {
-            await resend.emails.send({
-                from: `After5 Team <hello@${process.env.VERIFIED_DOMAIN}>`,
-                to: email,
-                subject: 'We Have Received Your Enquiry',
-                html: `
-          <p>Hi ${name.split(' ')[0] || name},</p>
-          <p>Thank you for reaching out to After5 Digital regarding <strong>${enquiryType}</strong>.</p>
-          <p>We have received your message and our team will get back to you within one business day.</p>
-          <br/>
-          <p>Best regards,</p>
-          <p>The After5 Team</p>
-        `,
-            });
+        // Emails temporarily disabled per user request
+        /*
+        const resendInstance = getResend();
+        if (resendInstance) {
+            // Logic for emails here when re-enabled
         }
         */
 
-        return res.status(200).json({ success: true, message: 'Enquiry submitted successfully' });
+        return res.status(200).json({ success: true });
 
-    } catch (error) {
-        console.error("Unhandled error in contact-request API:", error);
-        return res.status(500).json({ error: 'Internal server error' });
+    } catch (error: any) {
+        console.error("Contact API Error:", error);
+        return res.status(500).json({ 
+            error: 'Internal Server Error',
+            details: error.message || 'Unknown error'
+        });
     }
 }
