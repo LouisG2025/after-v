@@ -39,10 +39,10 @@ export default async function handler(
         }
 
         const body = req.body || {};
-        const { name, email, company, phone, message, industry } = body;
+        const { name, email, company, phone, message = '', industry } = body;
 
         // Validate required fields
-        if (!name || !email || !company || !phone || !message) {
+        if (!name || !email || !company || !phone) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 

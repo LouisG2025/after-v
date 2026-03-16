@@ -199,19 +199,18 @@ const DemoForm = () => {
         phone: '',
         countryCode: '+44',
         company: '',
-        industry: '',
-        message: ''
+        industry: ''
     });
     const [isPhoneFocused, setIsPhoneFocused] = useState(false);
 
-    const isFormValid = formData.firstName && formData.lastName && formData.email && formData.phone && formData.company && formData.industry && formData.message;
+    const isFormValid = formData.firstName && formData.lastName && formData.email && formData.phone && formData.company && formData.industry;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrorMsg('');
         setIsSubmitting(true);
 
-        const { firstName, lastName, email, phone, countryCode, company, industry, message } = formData;
+        const { firstName, lastName, email, phone, countryCode, company, industry } = formData;
         const name = `${firstName} ${lastName}`.trim();
         const fullPhone = `${countryCode}${phone}`;
 
@@ -226,8 +225,7 @@ const DemoForm = () => {
                     email,
                     phone: fullPhone,
                     company,
-                    industry,
-                    message
+                    industry
                 }),
             });
 
@@ -317,8 +315,7 @@ const DemoForm = () => {
                                                 phone: '',
                                                 countryCode: '+44',
                                                 company: '',
-                                                industry: '',
-                                                message: ''
+                                                industry: ''
                                             });
                                         }}
                                         whileHover={{ scale: 1.02 }}
@@ -355,11 +352,11 @@ const DemoForm = () => {
                                             <div key={i} className="space-y-3">
                                                 <label className="block text-[11px] font-cabinet font-bold text-[#475569] uppercase tracking-widest ml-1">{field.label}</label>
                                                 {field.name === 'phone' ? (
-                                                    <div className={`flex items-center bg-[#f8fafc] border ${isPhoneFocused ? 'border-accent-green ring-4 ring-accent-green/10' : 'border-[#cbd5e1]'} rounded-[16px] transition-all overflow-hidden`}>
+                                                    <div className={`flex items-center bg-white border ${isPhoneFocused ? 'border-accent-green ring-4 ring-accent-green/10' : 'border-[#cbd5e1]'} rounded-[16px] transition-all overflow-hidden`}>
                                                         <select
                                                             value={formData.countryCode}
                                                             onChange={(e) => setFormData(prev => ({ ...prev, countryCode: e.target.value }))}
-                                                            className="bg-transparent border-none pl-6 pr-2 py-4 font-cabinet font-bold text-[16px] focus:outline-none cursor-pointer appearance-none border-r border-[#cbd5e1]/30"
+                                                            className="bg-transparent border-none pl-6 pr-2 py-4 font-cabinet font-bold text-[17px] text-[#0f172a] focus:outline-none cursor-pointer appearance-none border-r border-[#cbd5e1]/30"
                                                         >
                                                             {COUNTRY_CODES.map(c => (
                                                                 <option key={c.code} value={c.code}>{c.label}</option>
@@ -385,7 +382,7 @@ const DemoForm = () => {
                                                         value={(formData as any)[field.name]}
                                                         onChange={(e) => setFormData(prev => ({ ...prev, [field.name]: e.target.value }))}
                                                         placeholder={field.placeholder}
-                                                        className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-[16px] px-6 py-4 font-cabinet font-bold text-[17px] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 transition-all placeholder:text-[#94a3b8]"
+                                                        className="w-full bg-white border border-[#cbd5e1] rounded-[16px] px-6 py-4 font-cabinet font-bold text-[17px] text-[#0f172a] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 transition-all placeholder:text-[#94a3b8]"
                                                     />
                                                 )}
                                             </div>
@@ -394,18 +391,6 @@ const DemoForm = () => {
                                     </div>
 
 
-                                    <div className="space-y-3">
-                                        <label className="block text-[11px] font-cabinet font-bold text-[#475569] uppercase tracking-widest ml-1">MESSAGE</label>
-                                        <textarea
-                                            name="message"
-                                            required
-                                            value={formData.message}
-                                            onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                                            rows={4}
-                                            placeholder="How can we help you?"
-                                            className="w-full bg-[#f8fafc] border border-[#cbd5e1] rounded-[16px] px-6 py-4 font-cabinet font-bold text-[17px] focus:outline-none focus:border-[#2EFFA1] focus:ring-4 focus:ring-[#2EFFA1]/10 resize-none transition-all placeholder:text-[#94a3b8]"
-                                        />
-                                    </div>
 
                                     <div className="flex items-start gap-4 pt-4">
                                         <div className="relative flex items-center pt-1">
