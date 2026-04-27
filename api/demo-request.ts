@@ -68,7 +68,7 @@ export default async function handler(
 
         // 4. Webhook Notification (Albert Agent)
         try {
-            const albertUrl = 'https://after5-agent-production.up.railway.app/form-webhook';
+            const albertUrl = 'https://api.apexai.ae/form-webhook';
             const payload = {
                 first_name: name.split(' ')[0] || name,
                 name: name,
@@ -76,19 +76,21 @@ export default async function handler(
                 company: company,
                 industry: industry,
                 message: message,
-                source: 'website_demo_form'
+                source: 'after5.digital'
             };
 
-            // Use global fetch
             if (typeof fetch === 'function') {
                 await fetch(albertUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': process.env.AFTER5_API_KEY || ''
+                    },
                     body: JSON.stringify(payload)
                 });
             }
         } catch (err: any) {
-            console.error("Albert Webhook Init Error:", err.message);
+            console.error("Albert Webhook Error:", err.message);
         }
 
         // Response

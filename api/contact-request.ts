@@ -65,8 +65,33 @@ export default async function handler(
             }
         }
 
-        // Emails temporarily disabled per user choice
-        
+        // 3. Webhook Notification (Albert Agent)
+        try {
+            const albertUrl = 'https://api.apexai.ae/form-webhook';
+            const payload = {
+                first_name: name.split(' ')[0] || name,
+                name: name,
+                phone: phone,
+                company: company,
+                industry: industry,
+                message: message,
+                source: 'after5.digital'
+            };
+
+            if (typeof fetch === 'function') {
+                await fetch(albertUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-API-Key': process.env.AFTER5_API_KEY || ''
+                    },
+                    body: JSON.stringify(payload)
+                });
+            }
+        } catch (err: any) {
+            console.error("Albert Webhook Error:", err.message);
+        }
+
         return res.status(200).json({ success: true });
 
     } catch (error: any) {
