@@ -39,7 +39,7 @@ export default async function handler(
         }
 
         const body = req.body || {};
-        const { name, email, company, phone, message = '', industry } = body;
+        const { name, email, company, phone, message = '' } = body;
 
         // Validate required fields
         if (!name || !email || !company || !phone) {
@@ -56,7 +56,6 @@ export default async function handler(
                         email,
                         phone,
                         company,
-                        industry,
                         message,
                         enquiry_type: 'demo'
                     }
@@ -74,7 +73,6 @@ export default async function handler(
                 name: name,
                 phone: phone,
                 company: company,
-                industry: industry,
                 message: message,
                 source: 'after5.digital'
             };

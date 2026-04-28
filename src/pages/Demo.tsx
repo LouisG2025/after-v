@@ -121,18 +121,17 @@ const DemoForm = () => {
         phone: '',
         countryCode: '+44',
         company: '',
-        industry: ''
     });
     const [isPhoneFocused, setIsPhoneFocused] = useState(false);
 
-    const isFormValid = formData.firstName && formData.lastName && formData.email && formData.phone && formData.company && formData.industry;
+    const isFormValid = formData.firstName && formData.lastName && formData.email && formData.phone && formData.company;
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrorMsg('');
         setIsSubmitting(true);
 
-        const { firstName, lastName, email, phone, countryCode, company, industry } = formData;
+        const { firstName, lastName, email, phone, countryCode, company } = formData;
         const name = `${firstName} ${lastName}`.trim();
         const fullPhone = `${countryCode}${phone}`.replace(/[- ]/g, '');
 
@@ -147,7 +146,6 @@ const DemoForm = () => {
                     email,
                     phone: fullPhone,
                     company,
-                    industry
                 }),
             });
 
@@ -235,7 +233,6 @@ const DemoForm = () => {
                                                 phone: '',
                                                 countryCode: '+44',
                                                 company: '',
-                                                industry: ''
                                             });
                                         }}
                                         whileHover={{ scale: 1.02 }}
@@ -269,7 +266,6 @@ const DemoForm = () => {
                                                     { label: 'EMAIL ADDRESS', name: 'email', type: 'email', placeholder: '' },
                                                     { label: 'MOBILE NUMBER (WHATSAPP)', name: 'phone', type: 'tel', placeholder: '' },
                                                     { label: 'COMPANY NAME', name: 'company', placeholder: '' },
-                                                    { label: 'INDUSTRY', name: 'industry', placeholder: '' },
                                                 ].map((field, i) => (
                                                     <div key={i} className="space-y-3">
                                                         <label className="block text-[11px] font-cabinet font-bold text-[#475569] uppercase tracking-widest ml-1">{field.label}</label>
