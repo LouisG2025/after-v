@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import { useGlowTrigger } from "../hooks/useGlowTrigger";
 
 const Hero = () => {
@@ -67,22 +66,26 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex flex-col items-center mt-2 md:mt-0"
           >
-            <Link to="/demo" className="inline-block">
-              <button className="bg-primary text-white font-inter font-bold px-[24px] md:px-[32px] h-[64px] md:h-[72.661px] rounded-[99.55px] flex items-center justify-center gap-[12px] hover:scale-105 transition-all text-[16px] md:text-[19.463px] group whitespace-nowrap shadow-xl">
-                Try a Demo Here
-                <div className="w-[36px] h-[36px] md:w-[40px] md:h-[41px] bg-accent-green rounded-full flex items-center justify-center group-hover:bg-accent-green/90 transition-colors shrink-0">
-                  <svg
-                    width="14"
-                    height="16"
-                    viewBox="0 0 18 20"
-                    fill="none"
-                    className="ml-1 md:w-[18px] md:h-[20px]"
-                  >
-                    <path d="M18 10L0 20V0L18 10Z" fill="#000000" />
-                  </svg>
-                </div>
-              </button>
-            </Link>
+            <button
+              onClick={() => {
+                const el = document.getElementById("how-it-works");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="bg-primary text-white font-inter font-bold px-[24px] md:px-[32px] h-[64px] md:h-[72.661px] rounded-[99.55px] flex items-center justify-center gap-[12px] hover:scale-105 transition-all text-[16px] md:text-[19.463px] group whitespace-nowrap shadow-xl cursor-pointer"
+            >
+              See How It Works
+              <div className="w-[36px] h-[36px] md:w-[40px] md:h-[41px] bg-accent-green rounded-full flex items-center justify-center group-hover:bg-accent-green/90 transition-colors shrink-0">
+                <svg
+                  width="14"
+                  height="16"
+                  viewBox="0 0 18 20"
+                  fill="none"
+                  className="ml-1 md:w-[18px] md:h-[20px]"
+                >
+                  <path d="M18 10L0 20V0L18 10Z" fill="#000000" />
+                </svg>
+              </div>
+            </button>
           </motion.div>
 
           {/* Dashboard Preview - exactly half crop, responsive */}
